@@ -14,11 +14,14 @@ public class PlayerMovement : MonoBehaviour
 
     //게임 오브젝트 내에 연결되어 있는 Animator 컴포넌트를 가져와서 사용
     protected Animator avatar;
+    protected PlayerAttack playerAttack; // 20240314 플레이어 공격 기능 추가
     float h;
     float v;
 
     //애니메이션 진행된 시간 체크용 변수
-    float lastAttackTime, lastSkilltime, LastDashTime;
+    float lastAttackTime;
+    float lastSkillTime;
+    float LastDashTime;
 
     [Header("Animation Condition")]
     public bool attacking = false;
@@ -27,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         avatar = GetComponent<Animator>();
+        playerAttack = GetComponent<PlayerAttack>();
 
     }
     
@@ -100,6 +104,7 @@ public class PlayerMovement : MonoBehaviour
             while( attacking )
             {
                 avatar.SetTrigger("AttackStart");
+                playerAttack.NormalAttack(); // 20240314 플레이어공격으로부터 일반 공격 호출
                 yield return new WaitForSeconds(1.0f);
             }
         }
@@ -111,10 +116,11 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     public void OnSkillDown()
     {
-        if(Time.time - lastSkilltime > 1.0f)
+        if(Time.time - lastSkillTime > 1.0f)
         {
             avatar.SetBool("Skill", true);
-            lastSkilltime = Time.time;
+            lastSkillTime = Time.time;
+            playerAttack.SkillAttack(); // 20240314 플레이어공격으로부터 스킬 공격 호출
         }
     }
 
@@ -128,12 +134,13 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     public void OnDashDown()
     {
-        if (Time.time - lastSkilltime > 1.0f)
+        if (Time.time - lastSkillTime > 1.0f)
         {
             
-            lastSkilltime = Time.time;
+            lastSkillTime = Time.time;
             dashing = true;
             avatar.SetTrigger("Dash");
+            playerAttack.DashAttack(); // 20240314 플레이어공격으로부터 대쉬 공격 호출
         }
     }
 
