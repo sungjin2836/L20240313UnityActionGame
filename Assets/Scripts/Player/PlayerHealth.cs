@@ -57,6 +57,7 @@ namespace Assets.Scripts.Player
 
         void Death()
         {
+            StageController.instance.FinishGanme();
             isDead = true;
             anim.SetTrigger("Die");
             playerMovement.enabled = false;
