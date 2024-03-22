@@ -17,7 +17,7 @@ public class TouchPad : MonoBehaviour
     private Vector3 _starPos = Vector3.zero; // 0
 
     //방향 컨트롤러가 원으로 움직이는 반지름
-    public float _dragRadius = 60.0f;
+    private float _dragRadius = 0.0f;
 
     //플레이어의 움직임을 관리하는 Playermovement와 연결해
     //방향키가 전달되면 캐릭터에게 신호를 보내는 역할
@@ -30,11 +30,13 @@ public class TouchPad : MonoBehaviour
     {
         _touchPad = GetComponent<RectTransform>();
         _starPos = _touchPad.position;
+        _dragRadius = 60.0f;
 
     }
 
     public void ButtonDown()
     {
+        Debug.Log("버튼 다운");
         _buttonPressed = true;
     }
 
